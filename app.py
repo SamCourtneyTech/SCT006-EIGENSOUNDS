@@ -320,6 +320,12 @@ def show_svd_compression(audio_processor, la_demo, visualizer):
     - **Optimal Approximation**: SVD gives the best rank-k approximation in terms of Frobenius norm
     - **Energy Compaction**: Most signal energy is captured by the largest singular values
     """)
+    
+    st.markdown("""
+    ### How SVD Compression Works:
+    
+    SVD compression works by turning audio into a matrix, applying Singular Value Decomposition to break it into important components, keeping only the top singular values that capture most of the signal's information, and then reconstructing the audio from those. This reduces storage while keeping the sound close to the original. Singular values can be thought of as values that hold information about the sound, with larger ones carrying more important information and smaller ones carrying less.
+    """)
 
 def show_audio_similarity(audio_processor, la_demo, visualizer):
     st.header("🔍 Audio Similarity Using Dot Products")
