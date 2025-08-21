@@ -67,3 +67,13 @@ Added comprehensive safeguards to prevent application crashes with large audio f
 - **Error Handling**: Graceful degradation instead of crashes for oversized inputs
 
 These changes ensure stable operation while maintaining full functionality for typical audio analysis tasks.
+
+### Test Audio Integration (August 21, 2025)
+Added a built-in test audio file for users who want to explore the application without uploading their own audio:
+
+- **Test Audio Button**: One-click loading of a Renaissance-style audio sample
+- **Immediate Exploration**: Users can start experimenting with all linear algebra features instantly
+- **User-Friendly Design**: Clear labeling and easy access in the sidebar
+- **Seamless Integration**: Test audio follows the same processing pipeline as uploaded files
+
+This improvement removes barriers to entry and allows immediate exploration of mathematical concepts.

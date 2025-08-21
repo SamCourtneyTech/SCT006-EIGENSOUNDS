@@ -113,6 +113,27 @@ def main():
     st.sidebar.markdown("---")
     st.sidebar.subheader("Audio Upload")
     st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
+    
+    # Test audio button
+    if st.sidebar.button("🎵 Load Test Audio (Renaissance)", help="Load a sample audio file to try the features"):
+        try:
+            # Load the test audio file
+            audio_data, sample_rate = librosa.load("test_audio.mp3", sr=22050, duration=30.0)
+            
+            # Store in session state
+            st.session_state.audio_data = audio_data
+            st.session_state.sample_rate = sample_rate
+            
+            # Compute spectrogram
+            st.session_state.spectrogram = audio_processor.compute_spectrogram(audio_data, sample_rate)
+            
+            duration = len(audio_data) / sample_rate
+            st.sidebar.success(f"Test audio loaded! Duration: {duration:.2f} seconds")
+            
+        except Exception as e:
+            st.sidebar.error(f"Error loading test audio: {str(e)}")
+    
+    st.sidebar.markdown("**Or upload your own:**")
     uploaded_file = st.sidebar.file_uploader(
         "Upload an audio file",
         type=['wav', 'mp3', 'flac', 'ogg'],
