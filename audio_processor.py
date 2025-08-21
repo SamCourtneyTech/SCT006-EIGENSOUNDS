@@ -23,10 +23,9 @@ class AudioProcessor:
             if len(audio_data) > max_samples:
                 audio_data = audio_data[:max_samples]
             
-            # Use smaller FFT size for very long audio
+            # Maintain full frequency resolution regardless of audio length
+            # The memory management is handled by duration truncation above
             n_fft = self.n_fft
-            if len(audio_data) > sample_rate * 10:  # If longer than 10 seconds
-                n_fft = 1024  # Reduce FFT size
             
             # Compute STFT
             stft = librosa.stft(
@@ -56,7 +55,8 @@ class AudioProcessor:
             audio_reconstructed = librosa.griffinlim(
                 magnitude_spec,
                 n_iter=32,
-                hop_length=self.hop_length
+                hop_length=self.hop_length,
+                n_fft=self.n_fft
             )
             
             # Normalize audio
