@@ -30,19 +30,22 @@ st.markdown("""
     display: none !important;
 }
 
-/* Custom audio wave loading animation */
-.stSpinner::after {
-    content: "🎵";
-    font-size: 2rem;
-    animation: pulse 1.5s ease-in-out infinite;
+/* Custom geometric loading animation */
+.stSpinner::before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #FF6B6B;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
     display: block;
-    text-align: center;
+    margin: 0 auto;
 }
 
-@keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Alternative wave bars animation */
@@ -112,7 +115,7 @@ def main():
     # Audio Upload Section (always available)
     st.sidebar.markdown("---")
     st.sidebar.subheader("Audio Upload")
-    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds\n🎵 Audio converted to mono for matrix operations")
+    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
     
     # Test audio button
     if st.sidebar.button("🎵 Load Test Audio (Renaissance)", help="Load a sample audio file to try the features"):
