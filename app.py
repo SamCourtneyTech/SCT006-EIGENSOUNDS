@@ -117,8 +117,13 @@ def main():
     # Test audio button
     if st.sidebar.button("🎵 Load Test Audio (Renaissance)", help="Load a sample audio file to try the features"):
         try:
-            # Load the test audio file
-            audio_data, sample_rate = librosa.load("test_audio.mp3", sr=22050, duration=30.0)
+            # Load the test audio file preserving original quality
+            audio_data, sample_rate = librosa.load("test_audio.mp3", sr=None, duration=30.0)
+            
+            # Only downsample if sample rate is very high (>48kHz) to preserve quality
+            if sample_rate > 48000:
+                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=22050)
+                sample_rate = 22050
             
             # Store in session state
             st.session_state.audio_data = audio_data
@@ -153,8 +158,13 @@ def main():
                 tmp_file.write(uploaded_file.getvalue())
                 tmp_path = tmp_file.name
 
-            # Load only first 30 seconds and downsample if needed
-            audio_data, sample_rate = librosa.load(tmp_path, sr=22050, duration=30.0)
+            # Load only first 30 seconds but preserve original sample rate when possible
+            audio_data, sample_rate = librosa.load(tmp_path, sr=None, duration=30.0)
+            
+            # Only downsample if sample rate is very high (>48kHz) to preserve quality
+            if sample_rate > 48000:
+                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=22050)
+                sample_rate = 22050
             os.unlink(tmp_path)
             
             # Check if audio is too short
@@ -372,7 +382,8 @@ def show_svd_compression(audio_processor, la_demo, visualizer):
             fig_orig = visualizer.plot_spectrogram(spectrogram, st.session_state.sample_rate)
             st.plotly_chart(fig_orig, use_container_width=True)
             
-            st.subheader("Original Audio")
+            st.subheader("Original Audio (Unprocessed)")
+            # Use the original audio data directly - no reconstruction
             st.audio(audio_processor.audio_to_bytes(
                 st.session_state.audio_data, st.session_state.sample_rate
             ), format='audio/wav')

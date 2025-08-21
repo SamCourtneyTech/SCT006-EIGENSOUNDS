@@ -70,12 +70,17 @@ class AudioProcessor:
     def audio_to_bytes(self, audio_data, sample_rate):
         """Convert audio array to bytes for playback in Streamlit."""
         try:
-            # Ensure audio is in valid range
-            audio_normalized = np.clip(audio_data, -1.0, 1.0)
+            # Only normalize if audio is outside valid range to preserve quality
+            if np.max(np.abs(audio_data)) > 1.0:
+                # Scale down only if needed
+                audio_normalized = audio_data / np.max(np.abs(audio_data))
+            else:
+                # Use original audio data without modification
+                audio_normalized = audio_data
             
-            # Convert to bytes
+            # Convert to bytes with high quality
             buffer = io.BytesIO()
-            sf.write(buffer, audio_normalized, sample_rate, format='WAV')
+            sf.write(buffer, audio_normalized, sample_rate, format='WAV', subtype='PCM_24')
             buffer.seek(0)
             
             return buffer.read()
