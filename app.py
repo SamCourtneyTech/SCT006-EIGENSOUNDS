@@ -253,7 +253,7 @@ def show_basic_analysis(audio_processor, visualizer):
     st.markdown("""
     ### Sam's Note: Why Mono Audio?
     
-    We use mono audio because linear algebra operations work best with 2D matrices. Stereo audio would create 3D data structures that make the math demonstrations much more complicated. By using mono, we can focus on understanding the core concepts like SVD and eigenvalues without getting distracted by left-right channel differences.
+    We're using mono audio to show linear algebra operations with 2D matrices. Stereo audio would create 3D data structures that make the math demonstrations much more complicated. By using mono, we can focus on understanding the core concepts like SVD and eigenvalues without getting distracted by left-right channel differences.
     """)
 
 def show_spectrogram_matrix(audio_processor, la_demo, visualizer):
