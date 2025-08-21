@@ -22,10 +22,10 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS to completely replace loading animations
+# Custom CSS with spinning vector loading animation
 st.markdown("""
 <style>
-/* Completely hide all Streamlit spinners and their content */
+/* Hide all default Streamlit spinners and loading indicators */
 .stSpinner, .stSpinner *, .stSpinner::before, .stSpinner::after {
     display: none !important;
     visibility: hidden !important;
@@ -37,28 +37,23 @@ st.markdown("""
     display: none !important;
 }
 
-/* Hide any running man or character animations */
-.stSpinner > div {
-    font-size: 0 !important;
-    color: transparent !important;
-}
-
-/* Create a clean loading state */
-.stApp.stAppRunning {
-    position: relative;
-}
-
+/* Custom spinning vector loading animation */
 .stApp.stAppRunning::before {
-    content: "Processing...";
+    content: "";
     position: fixed;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 107, 107, 0.9);
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
     z-index: 9999;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><g fill="%23FF6B6B" transform="translate(20,20)"><g transform="rotate(0)"><text x="-12" y="-2" font-family="monospace" font-size="10" text-anchor="middle">[x]</text><text x="-12" y="8" font-family="monospace" font-size="10" text-anchor="middle">[y]</text></g></g></svg>') no-repeat center;
+    background-size: contain;
+    animation: vectorSpin 2s linear infinite;
+}
+
+@keyframes vectorSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @keyframes spin {
@@ -337,11 +332,7 @@ def show_spectrogram_matrix(audio_processor, la_demo, visualizer):
     - **Condition Number**: Measures how well-conditioned the matrix is for numerical operations
     """)
     
-    st.markdown(f"""
-    ### Sam's Note: Understanding Frequency Content
-    
-    The spectrogram displays frequencies up to {st.session_state.sample_rate//2:,}Hz (the Nyquist frequency), but you might notice most musical energy appears below 16kHz. This is completely normal! Most musical instruments and vocals produce their main content in lower frequency ranges. Many audio files, especially compressed ones like MP3, also filter out very high frequencies to save space. The mathematical operations we're demonstrating work across the full frequency spectrum, regardless of where the actual audio energy lies.
-    """)
+
 
 def show_svd_compression(audio_processor, la_demo, visualizer):
     st.header("🗜️ SVD-Based Audio Compression")
