@@ -336,6 +336,12 @@ def show_spectrogram_matrix(audio_processor, la_demo, visualizer):
     - **Row Space**: Represents all possible linear combinations of temporal patterns
     - **Condition Number**: Measures how well-conditioned the matrix is for numerical operations
     """)
+    
+    st.markdown(f"""
+    ### Sam's Note: Understanding Frequency Content
+    
+    The spectrogram displays frequencies up to {st.session_state.sample_rate//2:,}Hz (the Nyquist frequency), but you might notice most musical energy appears below 16kHz. This is completely normal! Most musical instruments and vocals produce their main content in lower frequency ranges. Many audio files, especially compressed ones like MP3, also filter out very high frequencies to save space. The mathematical operations we're demonstrating work across the full frequency spectrum, regardless of where the actual audio energy lies.
+    """)
 
 def show_svd_compression(audio_processor, la_demo, visualizer):
     st.header("🗜️ SVD-Based Audio Compression")

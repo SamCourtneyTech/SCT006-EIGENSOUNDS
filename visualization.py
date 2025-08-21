@@ -49,7 +49,7 @@ class AudioVisualizer:
             hop_length = 512  # Default hop length
             time_axis = np.linspace(0, time_frames * hop_length / sample_rate, time_frames)
             
-            # Frequency axis (in Hz)
+            # Frequency axis (in Hz) - goes up to Nyquist frequency
             freq_axis = np.linspace(0, sample_rate / 2, freq_bins)
             
             fig = go.Figure(data=go.Heatmap(
@@ -61,7 +61,7 @@ class AudioVisualizer:
             ))
             
             fig.update_layout(
-                title="Spectrogram",
+                title=f"Spectrogram (Max Frequency: {sample_rate/2:.0f}Hz)",
                 xaxis_title="Time (seconds)",
                 yaxis_title="Frequency (Hz)",
                 height=self.default_height
