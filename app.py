@@ -22,25 +22,43 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS to change loading spinner to audio waves
+# Custom CSS to completely replace loading animations
 st.markdown("""
 <style>
-/* Hide default loading spinner */
-.stSpinner > div > div {
+/* Completely hide all Streamlit spinners and their content */
+.stSpinner, .stSpinner *, .stSpinner::before, .stSpinner::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Hide the running indicator in top right */
+[data-testid="stStatusWidget"] {
     display: none !important;
 }
 
-/* Custom geometric loading animation */
-.stSpinner::before {
-    content: "";
-    width: 30px;
-    height: 30px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #FF6B6B;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    display: block;
-    margin: 0 auto;
+/* Hide any running man or character animations */
+.stSpinner > div {
+    font-size: 0 !important;
+    color: transparent !important;
+}
+
+/* Create a clean loading state */
+.stApp.stAppRunning {
+    position: relative;
+}
+
+.stApp.stAppRunning::before {
+    content: "Processing...";
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 107, 107, 0.9);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 9999;
 }
 
 @keyframes spin {
