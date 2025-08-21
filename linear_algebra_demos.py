@@ -47,6 +47,13 @@ class LinearAlgebraDemo:
     def svd_compress_spectrogram(self, spectrogram, k_components):
         """Compress spectrogram using SVD with k components."""
         try:
+            # Check matrix size to prevent memory issues
+            matrix_size_mb = spectrogram.nbytes / (1024 * 1024)
+            if matrix_size_mb > 100:  # If matrix is larger than 100MB
+                # Downsample the spectrogram
+                factor = int(np.sqrt(matrix_size_mb / 50))  # Reduce to ~50MB
+                spectrogram = spectrogram[::factor, ::factor]
+            
             # Perform SVD
             U, s, Vt = svd(spectrogram, full_matrices=False)
             

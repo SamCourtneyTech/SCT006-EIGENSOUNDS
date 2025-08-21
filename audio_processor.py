@@ -12,14 +12,26 @@ class AudioProcessor:
         self.default_sr = 22050
         self.n_fft = 2048
         self.hop_length = 512
+        self.max_duration = 30.0  # Maximum duration in seconds
+        self.max_size_mb = 50     # Maximum file size in MB
         
     def compute_spectrogram(self, audio_data, sample_rate):
         """Compute the Short-Time Fourier Transform (STFT) spectrogram."""
         try:
+            # Limit audio length for memory management
+            max_samples = int(self.max_duration * sample_rate)
+            if len(audio_data) > max_samples:
+                audio_data = audio_data[:max_samples]
+            
+            # Use smaller FFT size for very long audio
+            n_fft = self.n_fft
+            if len(audio_data) > sample_rate * 10:  # If longer than 10 seconds
+                n_fft = 1024  # Reduce FFT size
+            
             # Compute STFT
             stft = librosa.stft(
                 audio_data, 
-                n_fft=self.n_fft, 
+                n_fft=n_fft, 
                 hop_length=self.hop_length
             )
             

@@ -53,3 +53,17 @@ The core mathematical operations are built around matrix decomposition technique
 - **os**: Operating system interface for file path operations
 
 The application is designed to be self-contained with no external API dependencies, relying entirely on local computation for all audio processing and mathematical operations.
+
+## Recent Changes
+
+### Memory Management and Performance Optimizations (August 21, 2025)
+Added comprehensive safeguards to prevent application crashes with large audio files:
+
+- **File Size Limits**: 50MB maximum file size with user warnings
+- **Duration Limits**: Automatic truncation to 30 seconds for performance  
+- **Memory Management**: Automatic downsampling of large spectrograms during SVD operations
+- **Progressive Processing**: Adaptive FFT sizes based on audio length
+- **User Feedback**: Clear warnings and progress indicators for large file processing
+- **Error Handling**: Graceful degradation instead of crashes for oversized inputs
+
+These changes ensure stable operation while maintaining full functionality for typical audio analysis tasks.

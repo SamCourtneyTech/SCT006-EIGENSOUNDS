@@ -61,21 +61,34 @@ def main():
     # Audio Upload Section (always available)
     st.sidebar.markdown("---")
     st.sidebar.subheader("Audio Upload")
+    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
     uploaded_file = st.sidebar.file_uploader(
         "Upload an audio file",
         type=['wav', 'mp3', 'flac', 'ogg'],
-        help="Supported formats: WAV, MP3, FLAC, OGG"
+        help="Supported formats: WAV, MP3, FLAC, OGG. Keep files under 50MB for best performance."
     )
 
     if uploaded_file is not None:
         try:
-            # Load audio
+            # Check file size (50MB limit)
+            file_size_mb = len(uploaded_file.getvalue()) / (1024 * 1024)
+            if file_size_mb > 50:
+                st.sidebar.error(f"File too large: {file_size_mb:.1f}MB. Please use files under 50MB.")
+                return
+            
+            # Load audio with duration limit
             with tempfile.NamedTemporaryFile(delete=False, suffix='.wav') as tmp_file:
-                tmp_file.write(uploaded_file.read())
+                tmp_file.write(uploaded_file.getvalue())
                 tmp_path = tmp_file.name
 
-            audio_data, sample_rate = librosa.load(tmp_path, sr=None)
+            # Load only first 30 seconds and downsample if needed
+            audio_data, sample_rate = librosa.load(tmp_path, sr=22050, duration=30.0)
             os.unlink(tmp_path)
+            
+            # Check if audio is too short
+            if len(audio_data) < 1024:
+                st.sidebar.error("Audio file is too short. Please use files with at least 1 second of audio.")
+                return
 
             # Store in session state
             st.session_state.audio_data = audio_data
@@ -84,7 +97,10 @@ def main():
             # Compute spectrogram
             st.session_state.spectrogram = audio_processor.compute_spectrogram(audio_data, sample_rate)
             
-            st.sidebar.success(f"Audio loaded! Duration: {len(audio_data)/sample_rate:.2f} seconds")
+            duration = len(audio_data) / sample_rate
+            st.sidebar.success(f"Audio loaded! Duration: {duration:.2f} seconds, Sample rate: {sample_rate}Hz")
+            if file_size_mb > 10:
+                st.sidebar.info("Large file detected - using first 30 seconds only for performance.")
             
         except Exception as e:
             st.sidebar.error(f"Error loading audio: {str(e)}")
@@ -246,9 +262,15 @@ def show_svd_compression(audio_processor, la_demo, visualizer):
         storage_reduction = (1 - compressed_size / original_size) * 100
         st.metric("Storage Reduction", f"{storage_reduction:.1f}%")
 
+    # Check spectrogram size and warn user
+    spec_size_mb = spectrogram.nbytes / (1024 * 1024)
+    if spec_size_mb > 50:
+        st.warning(f"Large spectrogram detected ({spec_size_mb:.1f}MB). Processing may be slow and use automatic optimization.")
+    
     # Perform SVD compression
     try:
-        compressed_spec, U, s, Vt = la_demo.svd_compress_spectrogram(spectrogram, k_components)
+        with st.spinner("Computing SVD compression..."):
+            compressed_spec, U, s, Vt = la_demo.svd_compress_spectrogram(spectrogram, k_components)
         
         # Reconstruct audio
         compressed_audio = audio_processor.spectrogram_to_audio(
