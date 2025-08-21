@@ -112,7 +112,7 @@ def main():
     # Audio Upload Section (always available)
     st.sidebar.markdown("---")
     st.sidebar.subheader("Audio Upload")
-    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
+    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds\n🎵 Audio converted to mono for matrix operations")
     
     # Test audio button
     if st.sidebar.button("🎵 Load Test Audio (Renaissance)", help="Load a sample audio file to try the features"):
@@ -122,8 +122,8 @@ def main():
             
             # Only downsample if sample rate is very high (>48kHz) to preserve quality
             if sample_rate > 48000:
-                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=22050)
-                sample_rate = 22050
+                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=44100)
+                sample_rate = 44100
             
             # Store in session state
             st.session_state.audio_data = audio_data
@@ -163,8 +163,8 @@ def main():
             
             # Only downsample if sample rate is very high (>48kHz) to preserve quality
             if sample_rate > 48000:
-                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=22050)
-                sample_rate = 22050
+                audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=44100)
+                sample_rate = 44100
             os.unlink(tmp_path)
             
             # Check if audio is too short

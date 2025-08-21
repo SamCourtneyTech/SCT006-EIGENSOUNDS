@@ -9,7 +9,7 @@ class AudioProcessor:
     """Handles all audio processing operations for the Eigen-Sounds application."""
     
     def __init__(self):
-        self.default_sr = 22050
+        self.default_sr = 44100   # CD quality sample rate
         self.n_fft = 2048
         self.hop_length = 512
         self.max_duration = 30.0  # Maximum duration in seconds
