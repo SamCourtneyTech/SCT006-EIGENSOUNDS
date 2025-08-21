@@ -22,6 +22,57 @@ st.set_page_config(
     layout="wide"
 )
 
+# Custom CSS to change loading spinner to audio waves
+st.markdown("""
+<style>
+/* Hide default loading spinner */
+.stSpinner > div > div {
+    display: none !important;
+}
+
+/* Custom audio wave loading animation */
+.stSpinner::after {
+    content: "🎵";
+    font-size: 2rem;
+    animation: pulse 1.5s ease-in-out infinite;
+    display: block;
+    text-align: center;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Alternative wave bars animation */
+.custom-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.wave-bar {
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+    animation: wave 1.2s ease-in-out infinite;
+    border-radius: 2px;
+}
+
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(1.5); }
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Initialize session state
 if 'audio_data' not in st.session_state:
     st.session_state.audio_data = None
@@ -269,8 +320,23 @@ def show_svd_compression(audio_processor, la_demo, visualizer):
     
     # Perform SVD compression
     try:
-        with st.spinner("Computing SVD compression..."):
-            compressed_spec, U, s, Vt = la_demo.svd_compress_spectrogram(spectrogram, k_components)
+        # Custom loading animation for SVD
+        loading_placeholder = st.empty()
+        loading_placeholder.markdown("""
+        <div class="custom-loading">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+        <p style="text-align: center; margin-top: 10px;">🎵 Computing SVD compression...</p>
+        """, unsafe_allow_html=True)
+        
+        compressed_spec, U, s, Vt = la_demo.svd_compress_spectrogram(spectrogram, k_components)
+        
+        # Clear loading animation
+        loading_placeholder.empty()
         
         # Reconstruct audio
         compressed_audio = audio_processor.spectrogram_to_audio(
