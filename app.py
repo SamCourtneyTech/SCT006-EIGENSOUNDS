@@ -131,10 +131,10 @@ def main():
     st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
     
     # Test audio button
-    if st.sidebar.button("🎵 Load Test Audio (Renaissance)", help="Load a sample audio file to try the features"):
+    if st.sidebar.button("🎵 Load Test Audio (EDM Track)", help="Load a sample audio file to try the features"):
         try:
             # Load the test audio file preserving original quality
-            audio_data, sample_rate = librosa.load("test_audio.mp3", sr=None, duration=30.0)
+            audio_data, sample_rate = librosa.load("edm_track.mp3", sr=None, duration=30.0)
             
             # Only downsample if sample rate is very high (>48kHz) to preserve quality
             if sample_rate > 48000:

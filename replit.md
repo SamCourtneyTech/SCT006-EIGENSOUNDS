@@ -71,9 +71,10 @@ These changes ensure stable operation while maintaining full functionality for t
 ### Test Audio Integration (August 21, 2025)
 Added a built-in test audio file for users who want to explore the application without uploading their own audio:
 
-- **Test Audio Button**: One-click loading of a Renaissance-style audio sample
+- **Test Audio Button**: One-click loading of an EDM track with full frequency spectrum content
 - **Immediate Exploration**: Users can start experimenting with all linear algebra features instantly
 - **User-Friendly Design**: Clear labeling and easy access in the sidebar
 - **Seamless Integration**: Test audio follows the same processing pipeline as uploaded files
+- **Full Frequency Range**: EDM track contains significant energy up to ~20kHz, demonstrating the complete frequency spectrum analysis
 
-This improvement removes barriers to entry and allows immediate exploration of mathematical concepts.
+This improvement removes barriers to entry and allows immediate exploration of mathematical concepts while showcasing the full capabilities of the frequency analysis.
