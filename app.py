@@ -119,25 +119,17 @@ if 'sample_rate' not in st.session_state:
 if 'spectrogram' not in st.session_state:
     st.session_state.spectrogram = None
 
-def get_logo_base64():
-    """Convert logo to base64 for inline HTML display."""
-    import base64
-    with open("logo.png", "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
 def main():
-    # Header with inline logo using HTML
-    st.markdown("""
-    <div style="display: flex; align-items: center; margin-bottom: 20px;">
-        <h1 style="margin: 0; margin-right: 20px;">EigenSounds</h1>
-        <img src="data:image/png;base64,{}" width="80" style="margin-left: auto;">
-    </div>
-    """.format(get_logo_base64()), unsafe_allow_html=True)
-    
-    st.subheader("Linear Algebra Through Audio Compression")
-    st.markdown("""
-    My interactive exploration of linear algebra through audio processing! This app shows how SVD, eigenvalues, and matrix operations apply to audio compression and analysis. Load times may vary. Check my notes under each section if you are new to linear algebra.
-    """)
+    # Header with logo
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.title("EigenSounds")
+        with col1:
+            st.image("logo.png", width=120)
+        st.subheader("Linear Algebra Through Audio Compression")
+        st.markdown("""
+        My interactive exploration of linear algebra through audio processing! This app shows how SVD, eigenvalues, and matrix operations apply to audio compression and analysis. Load times may vary. Check my notes under each section if you are new to linear algebra.
+        """)
     
 
     # Initialize processors
