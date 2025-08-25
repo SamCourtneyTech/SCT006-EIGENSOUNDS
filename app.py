@@ -89,9 +89,31 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
+# Initialize session state with EDM track auto-loaded
 if 'audio_data' not in st.session_state:
-    st.session_state.audio_data = None
+    try:
+        # Auto-load EDM track on first startup
+        audio_data, sample_rate = librosa.load("edm_track.mp3", sr=None, duration=30.0)
+        
+        # Only downsample if sample rate is very high (>48kHz) to preserve quality
+        if sample_rate > 48000:
+            audio_data = librosa.resample(audio_data, orig_sr=sample_rate, target_sr=44100)
+            sample_rate = 44100
+        
+        # Initialize audio processor for spectrogram computation
+        audio_processor = AudioProcessor()
+        spectrogram = audio_processor.compute_spectrogram(audio_data, sample_rate)
+        
+        # Store in session state
+        st.session_state.audio_data = audio_data
+        st.session_state.sample_rate = sample_rate
+        st.session_state.spectrogram = spectrogram
+    except Exception as e:
+        # Fallback to None if loading fails
+        st.session_state.audio_data = None
+        st.session_state.sample_rate = None
+        st.session_state.spectrogram = None
+
 if 'sample_rate' not in st.session_state:
     st.session_state.sample_rate = None
 if 'spectrogram' not in st.session_state:
@@ -101,9 +123,7 @@ def main():
     st.title("EigenSounds")
     st.subheader("Linear Algebra Through Audio Compression")
     st.markdown("""
-    This is my interactive exploration of linear algebra concepts through audio processing!
-    This application demonstrates how mathematical concepts like SVD, eigenvalues, and matrix operations
-    can be applied to audio compression and analysis. Load times can take a bit. Be sure to check out my additional notes and explanations below each section.
+    My interactive exploration of linear algebra through audio processing! This app shows how SVD, eigenvalues, and matrix operations apply to audio compression and analysis. Load times may vary. Check my notes under each section if you are new to linear algebra.
     """)
 
     # Initialize processors
@@ -131,8 +151,13 @@ def main():
     st.sidebar.subheader("Audio Upload")
     st.sidebar.info("File size limit: 50MB\nMax duration: 30 seconds")
     
-    # Test audio button
-    if st.sidebar.button("Load Test Audio (EDM Track)", help="Load a sample audio file to try the features"):
+    # Show current audio status
+    if st.session_state.audio_data is not None:
+        duration = len(st.session_state.audio_data) / st.session_state.sample_rate
+        st.sidebar.success(f"EDM Track loaded! Duration: {duration:.2f}s, Sample rate: {st.session_state.sample_rate}Hz")
+    
+    # Test audio button (reload option)
+    if st.sidebar.button("Reload Test Audio (EDM Track)", help="Reload the sample audio file"):
         try:
             # Load the test audio file preserving original quality
             audio_data, sample_rate = librosa.load("edm_track.mp3", sr=None, duration=30.0)
