@@ -18,7 +18,6 @@ from visualization import AudioVisualizer
 # Configure page
 st.set_page_config(
     page_title="Eigen-Sounds: Linear Algebra Through Audio",
-    page_icon="🎵",
     layout="wide"
 )
 
@@ -99,11 +98,12 @@ if 'spectrogram' not in st.session_state:
     st.session_state.spectrogram = None
 
 def main():
-    st.title("🎵 Eigen-Sounds: Linear Algebra Through Audio Compression")
+    st.title("EigenSounds")
+    st.subheader("Linear Algebra Through Audio Compression")
     st.markdown("""
-    Welcome to an interactive exploration of linear algebra concepts through audio processing!
+    This is my interactive exploration of linear algebra concepts through audio processing!
     This application demonstrates how mathematical concepts like SVD, eigenvalues, and matrix operations
-    can be applied to audio compression and analysis.
+    can be applied to audio compression and analysis. Load times can take a bit. Be sure to check out my additional notes and explanations below each section.
     """)
 
     # Initialize processors
@@ -129,10 +129,10 @@ def main():
     # Audio Upload Section (always available)
     st.sidebar.markdown("---")
     st.sidebar.subheader("Audio Upload")
-    st.sidebar.info("📁 File size limit: 50MB\n⏱️ Max duration: 30 seconds")
+    st.sidebar.info("File size limit: 50MB\nMax duration: 30 seconds")
     
     # Test audio button
-    if st.sidebar.button("🎵 Load Test Audio (EDM Track)", help="Load a sample audio file to try the features"):
+    if st.sidebar.button("Load Test Audio (EDM Track)", help="Load a sample audio file to try the features"):
         try:
             # Load the test audio file preserving original quality
             audio_data, sample_rate = librosa.load("edm_track.mp3", sr=None, duration=30.0)
@@ -227,7 +227,7 @@ def main():
         show_advanced_concepts(audio_processor, la_demo, visualizer)
 
 def show_basic_analysis(audio_processor, visualizer):
-    st.header("🎧 Basic Audio Analysis")
+    st.header("Basic Audio Analysis")
     
     if st.session_state.audio_data is None:
         st.warning("Please upload an audio file using the sidebar.")
@@ -265,13 +265,13 @@ def show_basic_analysis(audio_processor, visualizer):
     """)
     
     st.markdown("""
-    ### Sam's Note: Why Mono Audio?
+    ### Sam's Note:
     
-    We're using mono audio to show linear algebra operations with 2D matrices. Stereo audio would create 3D data structures that make the math demonstrations much more complicated. By using mono, we can focus on understanding the core concepts like SVD and eigenvalues without getting distracted by left-right channel differences.
+    We're using mono audio to show linear algebra operations with 2D matrices. Stereo audio would create 3D data structures that make the math demonstrations a little more complicated. By using mono, we can focus on understanding the core concepts like SVD and eigenvalues without getting distracted by left-right channel differences.
     """)
 
 def show_spectrogram_matrix(audio_processor, la_demo, visualizer):
-    st.header("📊 Spectrogram as Matrix Representation")
+    st.header("Spectrogram as Matrix Representation")
     
     if st.session_state.spectrogram is None:
         st.warning("Please upload an audio file first.")
