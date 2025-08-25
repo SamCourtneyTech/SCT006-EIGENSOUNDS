@@ -22,7 +22,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS to hide loading animations
+# Custom CSS with regular spinning wheel
 st.markdown("""
 <style>
 /* Hide all default Streamlit spinners and loading indicators */
@@ -35,6 +35,26 @@ st.markdown("""
 /* Hide the running indicator in top right */
 [data-testid="stStatusWidget"] {
     display: none !important;
+}
+
+/* Custom spinning wheel loading animation */
+.stApp.stAppRunning::before {
+    content: "";
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #FF6B6B;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 9999;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @keyframes spin {
