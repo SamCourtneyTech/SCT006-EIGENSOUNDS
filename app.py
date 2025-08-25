@@ -129,8 +129,8 @@ def main():
     # Header with inline logo using HTML
     st.markdown("""
     <div style="display: flex; align-items: center; margin-bottom: 20px;">
-        <h1 style="margin: 0; margin-right: 10px;">EigenSounds</h1>
-        <img src="data:image/png;base64,{}" width="80" style="margin-left: auto;">
+        <h1 style="margin: 0; margin-right: 20px;">EigenSounds</h1>
+        <img src="data:image/png;base64,{}" width="200" style="margin-left: 40px;">
     </div>
     """.format(get_logo_base64()), unsafe_allow_html=True)
     
