@@ -120,11 +120,16 @@ if 'spectrogram' not in st.session_state:
     st.session_state.spectrogram = None
 
 def main():
-    st.title("EigenSounds")
-    st.subheader("Linear Algebra Through Audio Compression")
-    st.markdown("""
-    My interactive exploration of linear algebra through audio processing! This app shows how SVD, eigenvalues, and matrix operations apply to audio compression and analysis. Load times may vary. Check my notes under each section if you are new to linear algebra.
-    """)
+    # Header with logo
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.title("EigenSounds")
+        st.subheader("Linear Algebra Through Audio Compression")
+        st.markdown("""
+        My interactive exploration of linear algebra through audio processing! This app shows how SVD, eigenvalues, and matrix operations apply to audio compression and analysis. Load times may vary. Check my notes under each section if you are new to linear algebra.
+        """)
+    with col2:
+        st.image("logo.png", width=120)
 
     # Initialize processors
     audio_processor = AudioProcessor()
