@@ -22,7 +22,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom CSS with spinning vector loading animation
+# Custom CSS to hide loading animations
 st.markdown("""
 <style>
 /* Hide all default Streamlit spinners and loading indicators */
@@ -35,25 +35,6 @@ st.markdown("""
 /* Hide the running indicator in top right */
 [data-testid="stStatusWidget"] {
     display: none !important;
-}
-
-/* Custom spinning vector loading animation */
-.stApp.stAppRunning::before {
-    content: "";
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 40px;
-    height: 40px;
-    z-index: 9999;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><g fill="%23FF6B6B" transform="translate(20,20)"><g transform="rotate(0)"><text x="-12" y="-2" font-family="monospace" font-size="10" text-anchor="middle">[x]</text><text x="-12" y="8" font-family="monospace" font-size="10" text-anchor="middle">[y]</text></g></g></svg>') no-repeat center;
-    background-size: contain;
-    animation: vectorSpin 2s linear infinite;
-}
-
-@keyframes vectorSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 
 @keyframes spin {
