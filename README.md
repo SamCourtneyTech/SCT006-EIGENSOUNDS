@@ -12,7 +12,8 @@ EIGENSOUNDS is a browser-hosted audio visualizer built with Python (Streamlit). 
    ```bash
    pip install -r requirements.txt
 4. Launch the app:
-   streamlit run app.py
+   ```bash
+   npm run dev
 5. Open the URL shown in the terminal in a browser.
 
 ## Disclaimer  
