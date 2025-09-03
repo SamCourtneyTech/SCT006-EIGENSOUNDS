@@ -3,7 +3,7 @@
 Access it live: [samcourtney.tech/eigensounds](https://samcourtney.tech/eigensounds/)
 
 ## Overview  
-EIGENSOUNDS is a browser-hosted audio visualizer built with Python (Streamlit). It analyzes audio samples using eigen-decomposition and visualizes the results interactively. No download or install required—just visit the link above.
+EIGENSOUNDS is a browser-hosted audio visualizer built with Python (Streamlit). It analyzes audio samples using eigen-decomposition and visualizes the results interactively (With some notes on the intersection of linear algebra and audio). No download or install required—just visit the link above.
 
 ## Optional Local Setup  
 1. Clone the repository.  
@@ -13,7 +13,7 @@ EIGENSOUNDS is a browser-hosted audio visualizer built with Python (Streamlit). 
    pip install -r requirements.txt
 4. Launch the app:
    ```bash
-   npm run dev
+   streamlit run app.py
 5. Open the URL shown in the terminal in a browser.
 
 ## Disclaimer  
